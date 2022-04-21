@@ -30,7 +30,7 @@ public static class BuildScript
 
         var buildReport = BuildPipeline.BuildPlayer(
             paths.ToArray(), 
-            $"{config.outputDir}/{PlayerSettings.productName}",
+            $"{config.outputDir}",
             BuildTarget.WebGL,
             buildOptions
         );
