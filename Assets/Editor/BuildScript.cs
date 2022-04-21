@@ -30,7 +30,7 @@ public static class BuildScript
 
         var buildPlayerOptions = new BuildPlayerOptions();
         buildPlayerOptions.scenes = paths.ToArray();
-        buildPlayerOptions.locationPathName = config.outputDir;
+        buildPlayerOptions.locationPathName = @"C:\Users\MesonVarjo\Documents\github\UnityWebGLTestProject\feature\ritto\webhooktest\45f9d164e855fce1014023a2b3fb0e4230cc8c18";
         buildPlayerOptions.target = BuildTarget.WebGL;
         buildPlayerOptions.options = BuildOptions.Development;
 
