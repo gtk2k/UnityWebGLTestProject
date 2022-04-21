@@ -27,10 +27,10 @@ public static class BuildScript
         var config = JsonUtility.FromJson<BuildConfig>(configJson);
         Debug.Log($"Output Directory > {config.outputDir}");
         Debug.Log($"LocationPathName > {config.outputDir}");
-
+        var commitHash = config.outputDir.Substring(config.outputDir.LastIndexOf("\\") + 1);
         var buildPlayerOptions = new BuildPlayerOptions();
         buildPlayerOptions.scenes = paths.ToArray();
-        buildPlayerOptions.locationPathName = "";
+        buildPlayerOptions.locationPathName = $@"feature\ritto\webhooktest\{commitHash}";
         buildPlayerOptions.target = BuildTarget.WebGL;
         buildPlayerOptions.options = BuildOptions.Development;
 
