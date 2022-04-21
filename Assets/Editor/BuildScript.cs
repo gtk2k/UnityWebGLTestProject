@@ -17,12 +17,21 @@ public static class BuildScript
         var paths = GetBuildScenePaths();
         var buildOptions = BuildOptions.Development;
 
+
         var documentsPath = Environment.GetFolderPath(Environment.SpecialFolder.Personal);
         Debug.Log($"Documents Folder Path > {documentsPath}");
 
         var configJson = File.ReadAllText(Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.Personal), "buildConfig.json"));
         var config = JsonUtility.FromJson<BuildConfig>(configJson);
         Debug.Log($"config > {config}");
+        Console.WriteLine($"Output Directory > {config.outputDir}");
+
+        var buildScriptLogFilePath = Path.Combine(config.outputDir, "buildScript.log");
+        File.AppendAllLines(buildScriptLogFilePath, new[] {
+            $"Documents Folder Path > {documentsPath}",
+            $"Output Directory > {config.outputDir}",
+            $"Output Path > {config.outputDir}/{PlayerSettings.productName}"
+        });
 
         var buildReport = BuildPipeline.BuildPlayer(
             paths.ToArray(),
@@ -32,7 +41,7 @@ public static class BuildScript
         );
 
         var summary = buildReport.summary;
-
+       
         if (summary.result == UnityEditor.Build.Reporting.BuildResult.Succeeded)
         {
             Debug.Log("Success");
