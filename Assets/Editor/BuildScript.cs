@@ -26,14 +26,15 @@ public static class BuildScript
         Debug.Log($"configJson > {configJson}");
         var config = JsonUtility.FromJson<BuildConfig>(configJson);
         Debug.Log($"Output Directory > {config.outputDir}");
-        Debug.Log($"LocationPathName > {config.outputDir}/{PlayerSettings.productName}");
+        Debug.Log($"LocationPathName > {config.outputDir}");
 
-        var buildReport = BuildPipeline.BuildPlayer(
-            paths.ToArray(), 
-            $"{config.outputDir}",
-            BuildTarget.WebGL,
-            buildOptions
-        );
+        var buildPlayerOptions = new BuildPlayerOptions();
+        buildPlayerOptions.scenes = paths.ToArray();
+        buildPlayerOptions.locationPathName = config.outputDir;
+        buildPlayerOptions.target = BuildTarget.WebGL;
+        buildPlayerOptions.options = BuildOptions.Development;
+
+        var buildReport = BuildPipeline.BuildPlayer(buildPlayerOptions);
 
         var summary = buildReport.summary;
        
