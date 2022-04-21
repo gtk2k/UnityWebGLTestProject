@@ -36,8 +36,10 @@ public static class BuildScript
         var commitHash = config.outputDir.Substring(config.outputDir.LastIndexOf("\\") + 1);
         var buildPlayerOptions = new BuildPlayerOptions();
         buildPlayerOptions.scenes = paths.ToArray();
-        Debug.Log($"locationPathName > {config.outputDir}");
-        buildPlayerOptions.locationPathName = config.outputDir;
+
+        var locationPathName = $"{config.outputDir}\\{PlayerSettings.productName}";
+        Debug.Log($"locationPathName > {locationPathName}");
+        buildPlayerOptions.locationPathName = locationPathName;
         buildPlayerOptions.target = BuildTarget.WebGL;
         buildPlayerOptions.options = BuildOptions.Development;
 
