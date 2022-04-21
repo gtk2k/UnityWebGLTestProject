@@ -36,9 +36,8 @@ public static class BuildScript
         var commitHash = config.outputDir.Substring(config.outputDir.LastIndexOf("\\") + 1);
         var buildPlayerOptions = new BuildPlayerOptions();
         buildPlayerOptions.scenes = paths.ToArray();
-        var locationPathName = $@"feature\ritto\webhooktest\{commitHash}";
-        Debug.Log($"locationPathName > {locationPathName}");
-        buildPlayerOptions.locationPathName = locationPathName;
+        Debug.Log($"locationPathName > {config.outputDir}");
+        buildPlayerOptions.locationPathName = config.outputDir;
         buildPlayerOptions.target = BuildTarget.WebGL;
         buildPlayerOptions.options = BuildOptions.Development;
 
