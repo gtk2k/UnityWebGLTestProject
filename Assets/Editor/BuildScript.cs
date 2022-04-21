@@ -9,7 +9,7 @@ public static class BuildScript
 {
     private class BuildConfig
     {
-        public string outputDir { get; set; }
+        public string outputDir;
     }
 
     public static void WebGLBuild()
