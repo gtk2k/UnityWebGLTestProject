@@ -26,9 +26,10 @@ public static class BuildScript
         Debug.Log($"configJson > {configJson}");
         var config = JsonUtility.FromJson<BuildConfig>(configJson);
         Debug.Log($"Output Directory > {config.outputDir}");
+        Debug.Log($"LocationPathName > {config.outputDir}/{PlayerSettings.productName}");
 
         var buildReport = BuildPipeline.BuildPlayer(
-            paths.ToArray(),
+            paths.ToArray(), 
             $"{config.outputDir}/{PlayerSettings.productName}",
             BuildTarget.WebGL,
             buildOptions
