@@ -6,6 +6,6 @@ public class Rotator : MonoBehaviour
 {
     private void Update()
     {
-        transform.Rotate(0.1f, 0.2f, 4.0f);
+        transform.Rotate(0.1f, 0.2f, 1.0f);
     }
 }
