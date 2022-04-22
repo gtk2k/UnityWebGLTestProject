@@ -51,12 +51,12 @@ public static class BuildScript
         if (summary.result == UnityEditor.Build.Reporting.BuildResult.Succeeded)
         {
             Debug.Log("Success");
-            buildResult.buildResult = "success";
+            buildResult.buildResult = "Success";
         }
         else
         {
             Debug.LogError("Error");
-            buildResult.buildResult = "error";
+            buildResult.buildResult = "Fail";
         }
         File.WriteAllText(buildResultPath, JsonUtility.ToJson(buildResult, true));
     }
