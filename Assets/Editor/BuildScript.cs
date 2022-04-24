@@ -38,9 +38,10 @@ public static class BuildScript
         Debug.Log($"buildConfigPath > {buildConfigPath}");
         Debug.Log($"configJson > {configJson}");
         Debug.Log($"Output Directory > {config.outputDir}");
-
+        PlayerSettings.SetScriptingBackend(BuildTargetGroup.Android, ScriptingImplementation.IL2CPP);
         buildResult.Android = platformBuild(buildPlayerOptions, BuildTarget.Android, config.outputDir, ".apk");
-        buildResult.Windows = platformBuild(buildPlayerOptions, BuildTarget.StandaloneWindows, config.outputDir, ".exe");
+        PlayerSettings.SetScriptingBackend(BuildTargetGroup.Standalone, ScriptingImplementation.IL2CPP);
+        buildResult.Windows = platformBuild(buildPlayerOptions, BuildTarget.StandaloneWindows64, config.outputDir, ".exe");
         buildResult.WebGL = platformBuild(buildPlayerOptions, BuildTarget.WebGL, config.outputDir, "");
         buildResult.Linux = platformBuild(buildPlayerOptions, BuildTarget.StandaloneLinux64, config.outputDir, ".x86_x64");
 
