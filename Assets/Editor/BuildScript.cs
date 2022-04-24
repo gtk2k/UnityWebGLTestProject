@@ -49,7 +49,7 @@ public static class BuildScript
         buildPlayerOptions.options = BuildOptions.Development;
         buildPlayerOptions.scenes = paths.ToArray();
 
-        var locationPathName = $"{config.outputDir}\\{PlayerSettings.productName}";
+        var locationPathName = config.outputDir;
         Debug.Log($"locationPathName > {locationPathName}");
         
         buildPlayerOptions.locationPathName = Path.Combine(locationPathName, $@"Linux\{PlayerSettings.productName}.x68_x64");
