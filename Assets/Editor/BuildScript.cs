@@ -43,6 +43,7 @@ public static class BuildScript
         PlayerSettings.SetScriptingBackend(BuildTargetGroup.Standalone, ScriptingImplementation.IL2CPP);
         buildResult.Windows = platformBuild(buildPlayerOptions, BuildTarget.StandaloneWindows64, config.outputDir, ".exe");
         buildResult.WebGL = platformBuild(buildPlayerOptions, BuildTarget.WebGL, config.outputDir, "");
+        PlayerSettings.SetScriptingBackend(BuildTargetGroup.Standalone, ScriptingImplementation.Mono2x);
         buildResult.Linux = platformBuild(buildPlayerOptions, BuildTarget.StandaloneLinux64, config.outputDir, ".x86_x64");
 
         File.WriteAllText(buildResultPath, JsonUtility.ToJson(buildResult, true));
