@@ -44,8 +44,9 @@ public static class BuildScript
         var config = JsonUtility.FromJson<BuildConfig>(configJson);
         Debug.Log($"Output Directory > {config.outputDir}");
         Debug.Log($"LocationPathName > {config.outputDir}");
-        var commitHash = config.outputDir.Substring(config.outputDir.LastIndexOf("\\") + 1);
+
         var buildPlayerOptions = new BuildPlayerOptions();
+        buildPlayerOptions.options = BuildOptions.Development;
         buildPlayerOptions.scenes = paths.ToArray();
 
         var locationPathName = $"{config.outputDir}\\{PlayerSettings.productName}";
@@ -53,7 +54,6 @@ public static class BuildScript
         
         buildPlayerOptions.locationPathName = Path.Combine(locationPathName, $@"Linux\{PlayerSettings.productName}.x68_x64");
         buildPlayerOptions.target = BuildTarget.StandaloneLinux64;
-        buildPlayerOptions.options = BuildOptions.Development;
         var buildReport = BuildPipeline.BuildPlayer(buildPlayerOptions);
         if (buildReport.summary.result == UnityEditor.Build.Reporting.BuildResult.Succeeded)
         {
@@ -81,7 +81,7 @@ public static class BuildScript
         }
 
         buildPlayerOptions.locationPathName = Path.Combine(locationPathName, $@"WebGL\{PlayerSettings.productName}");
-        buildPlayerOptions.target = BuildTarget.StandaloneWindows64;
+        buildPlayerOptions.target = BuildTarget.WebGL;
         buildReport = BuildPipeline.BuildPlayer(buildPlayerOptions);
         if (buildReport.summary.result == UnityEditor.Build.Reporting.BuildResult.Succeeded)
         {
