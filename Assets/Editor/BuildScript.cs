@@ -19,7 +19,9 @@ public static class BuildScript
 
     private class BuildResult
     {
-        public string buildResult;
+        public string WindowsBuildResult = "None";
+        public string LinuxBuildResult = "None";
+        public string WebGLBuildResult = "None";
     }
 
     public static void MesonBuild()
@@ -30,47 +32,68 @@ public static class BuildScript
         };
 
         var paths = GetBuildScenePaths();
-        var buildOptions = BuildOptions.Development;
+        var buildResult = new BuildResult();
 
         var documentsPath = Environment.GetFolderPath(Environment.SpecialFolder.Personal);
         Debug.Log($"Documents Folder Path > {documentsPath}");
         var buildConfigPath = Path.Combine(documentsPath, "buildConfig.json");
         var buildResultPath = Path.Combine(documentsPath, "buildResult.json");
         Debug.Log($"buildConfigPath > {buildConfigPath}");
-        //var configJson = File.ReadAllText(buildConfigPath);
-        //Debug.Log($"configJson > {configJson}");
-        //var config = JsonUtility.FromJson<BuildConfig>(configJson);
-        //Debug.Log($"Output Directory > {config.outputDir}");
-        //Debug.Log($"LocationPathName > {config.outputDir}");
-        //var commitHash = config.outputDir.Substring(config.outputDir.LastIndexOf("\\") + 1);
+        var configJson = File.ReadAllText(buildConfigPath);
+        Debug.Log($"configJson > {configJson}");
+        var config = JsonUtility.FromJson<BuildConfig>(configJson);
+        Debug.Log($"Output Directory > {config.outputDir}");
+        Debug.Log($"LocationPathName > {config.outputDir}");
+        var commitHash = config.outputDir.Substring(config.outputDir.LastIndexOf("\\") + 1);
         var buildPlayerOptions = new BuildPlayerOptions();
         buildPlayerOptions.scenes = paths.ToArray();
 
-        //var locationPathName = $"{config.outputDir}\\{PlayerSettings.productName}";
-        //Debug.Log($"locationPathName > {locationPathName}");
-        buildPlayerOptions.locationPathName = @"D:\MESON_Projects_2\UnityWebGLTestProject\LinuxBuild\hoge.x86_x64";//locationPathName;
+        var locationPathName = $"{config.outputDir}\\{PlayerSettings.productName}";
+        Debug.Log($"locationPathName > {locationPathName}");
+        
+        buildPlayerOptions.locationPathName = Path.Combine(locationPathName, $@"Linux\{PlayerSettings.productName}.x68_x64");
         buildPlayerOptions.target = BuildTarget.StandaloneLinux64;
         buildPlayerOptions.options = BuildOptions.Development;
-
         var buildReport = BuildPipeline.BuildPlayer(buildPlayerOptions);
-
-        buildPlayerOptions.locationPathName = @"D:\MESON_Projects_2\UnityWebGLTestProject\WindowsBuild\hoge.exe";//locationPathName;
-        buildPlayerOptions.target = BuildTarget.StandaloneWindows64;
-        buildReport = BuildPipeline.BuildPlayer(buildPlayerOptions);
-
-        var summary = buildReport.summary;
-
-        var buildResult = new BuildResult();
-        if (summary.result == UnityEditor.Build.Reporting.BuildResult.Succeeded)
+        if (buildReport.summary.result == UnityEditor.Build.Reporting.BuildResult.Succeeded)
         {
-            Debug.Log("Success");
-            buildResult.buildResult = "Success";
+            Debug.Log("Linux Success");
+            buildResult.LinuxBuildResult = "Success";
         }
         else
         {
-            Debug.LogError("Fail");
-            buildResult.buildResult = "Fail";
+            Debug.LogError("Linux Build Fail");
+            buildResult.LinuxBuildResult = "Fail";
         }
+
+        buildPlayerOptions.locationPathName = Path.Combine(locationPathName, $@"Windows\{PlayerSettings.productName}.exe");
+        buildPlayerOptions.target = BuildTarget.StandaloneWindows64;
+        buildReport = BuildPipeline.BuildPlayer(buildPlayerOptions);
+        if (buildReport.summary.result == UnityEditor.Build.Reporting.BuildResult.Succeeded)
+        {
+            Debug.Log("Windows Build Success");
+            buildResult.WindowsBuildResult = "Success";
+        }
+        else
+        {
+            Debug.LogError("Windows Build Fail");
+            buildResult.WindowsBuildResult = "Fail";
+        }
+
+        buildPlayerOptions.locationPathName = Path.Combine(locationPathName, $@"WebGL\{PlayerSettings.productName}");
+        buildPlayerOptions.target = BuildTarget.StandaloneWindows64;
+        buildReport = BuildPipeline.BuildPlayer(buildPlayerOptions);
+        if (buildReport.summary.result == UnityEditor.Build.Reporting.BuildResult.Succeeded)
+        {
+            Debug.Log("WebGL Build Success");
+            buildResult.WebGLBuildResult = "Success";
+        }
+        else
+        {
+            Debug.LogError("Windows Build Fail");
+            buildResult.WebGLBuildResult = "Fail";
+        }
+
         File.WriteAllText(buildResultPath, JsonUtility.ToJson(buildResult, true));
     }
 
