@@ -18,6 +18,7 @@ public static class BuildScript
         public string Windows = "None";
         public string Linux = "None";
         public string WebGL = "None";
+        public string ProductName;
     }
 
     public static void MesonBuild()
@@ -45,6 +46,8 @@ public static class BuildScript
         buildResult.WebGL = platformBuild(buildPlayerOptions, BuildTarget.WebGL, config.outputDir, "");
         PlayerSettings.SetScriptingBackend(BuildTargetGroup.Standalone, ScriptingImplementation.Mono2x);
         buildResult.Linux = platformBuild(buildPlayerOptions, BuildTarget.StandaloneLinux64, config.outputDir, ".x86_x64");
+
+        buildResult.ProductName = PlayerSettings.productName;
 
         File.WriteAllText(buildResultPath, JsonUtility.ToJson(buildResult, true));
     }
